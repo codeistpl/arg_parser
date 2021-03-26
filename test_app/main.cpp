@@ -1,6 +1,9 @@
-#include <iostream>
+#include <arg_parser.h>
+
+using namespace arg_parser;
 
 int main(int argc, char const *argv[]) {
-    std::cout << "hello world" << std::endl;
+    ArgParser parser;
+    parser.parse_args(argc, argv);
     return 0;
 }

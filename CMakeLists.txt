@@ -1,5 +1,7 @@
 project(template_cmake_project)
 cmake_minimum_required(VERSION 3.17)
+set( CMAKE_CXX_STANDARD 20)
+set( CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options( -Werror -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast 
                     -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion 

@@ -7,7 +7,7 @@ class arg_parse_test : public ::testing::Test {
 };
 
 TEST_F(arg_parse_test, parser_prints_help_on_h_passed) {
-    char *argv[1] = {"-h"};
+    const char *argv[1] = {"-h"};
     int argc = 1;
     ArgParser parser;
     parser.parse_args(argc, argv);
