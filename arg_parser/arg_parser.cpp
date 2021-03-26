@@ -21,14 +21,24 @@ bool has(const std::vector<std::string_view> &argv, std::string_view val) {
 } // namespace
 namespace arg_parser {
 
-void ArgParser::parse_args(int argc, const char *argv[]) {
-    parse_args(to_vector(argc, argv));
+ArgParser::ArgParser(const std::string &description)
+    : description_(description) {}
+
+ArgParser::Args ArgParser::parse_args(int argc, const char *argv[]) {
+    return parse_args(to_vector(argc, argv));
 }
 
-void ArgParser::parse_args(std::vector<std::string_view> argv) {
+ArgParser::Args ArgParser::parse_args(std::vector<std::string_view> argv) {
     if (has(argv, "-h")) {
-        std::cout << "help";
+        print_help();
     }
+    Args args;
+    for (const auto &arg : argv) {
+        args[std::string(arg)] = "true";
+    }
+    return args;
 }
+
+void ArgParser::print_help() const { std::cout << description_ << std::endl; }
 
 } // namespace arg_parser
