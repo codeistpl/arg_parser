@@ -1,6 +1,9 @@
 #pragma once
 
+#include <argument.h>
 #include <map>
+#include <memory>
+#include <optional>
 #include <stdio.h>
 #include <string>
 #include <string_view>
@@ -16,12 +19,15 @@ class ArgParser {
 
     ArgParser(const std::string &description = std::string());
     Args parse_args(int argc, const char *argv[]);
-    Args parse_args(std::vector<std::string_view> argv);
+    Args parse_args(std::vector<std::string> argv);
     void print_help() const;
+    void add_arg(Argument arg);
 
   private:
     bool argument_is_defined(std::string_view arg) const;
-
+    const Argument *get_matching_definition(std::string_view arg) const;
+    std::string program_name;
+    std::vector<Argument> arg_definitions_;
     std::string description_;
 };
 

@@ -32,6 +32,6 @@ foreach (TEST  ${TESTS})
     add_executable(${TEST_NAME} ${TEST})
     target_include_directories(${TEST_NAME} PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
-    target_link_libraries(${TEST_NAME} ${MODULE_NAME} GTest::GTest GTest::Main fmt)        
+    target_link_libraries(${TEST_NAME} ${MODULE_NAME} GTest::GTest GTest::Main ${CONAN_LIBS_FMT})        
     add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
 endforeach(TEST)

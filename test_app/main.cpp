@@ -6,6 +6,7 @@ using namespace arg_parser;
 int main(int argc, char const *argv[]) {
     ArgParser parser(
         "This is just an example program presenting argument parser working.");
+    parser.add_arg(make_flag("--help", "-h", "Prints help page."));
     auto args = parser.parse_args(argc, argv);
 
     for (const auto &pair : args) {
