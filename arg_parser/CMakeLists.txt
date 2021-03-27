@@ -23,15 +23,15 @@ target_include_directories(${MODULE_NAME} PUBLIC
 add_library(ArgParser::ArgParser ALIAS ${MODULE_NAME})
 
 #tests
-
-add_executable(${MODULE_NAME}_tests ${TESTS})
 find_package(Threads REQUIRED)
 find_package(GTest REQUIRED)
-message(${MODULE_NAME} ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${MODULE_NAME}_tests PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
-    
-target_link_libraries(${MODULE_NAME}_tests ${MODULE_NAME} GTest::GTest GTest::Main fmt)
 
-add_test(NAME ${MODULE_NAME}_tests COMMAND ${MODULE_NAME}_tests
-    WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
+foreach (TEST  ${TESTS})
+    get_filename_component(TEST_NAME ${TEST} NAME_WE)
+    message(${TEST_NAME})
+    add_executable(${TEST_NAME} ${TEST})
+    target_include_directories(${TEST_NAME} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+    target_link_libraries(${TEST_NAME} ${MODULE_NAME} GTest::GTest GTest::Main fmt)        
+    add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME} WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
+endforeach(TEST)
