@@ -6,10 +6,17 @@ class arg_parse_test : public ::testing::Test {
   public:
 };
 
-TEST_F(arg_parse_test, parser_prints_help_on_h_passed) {
+TEST_F(arg_parse_test, return_empty_args_if_no_args_defined) {
+    const char *argv[] = {""};
+    int argc = 0;
+    ArgParser parser("This is description of a program.");
+    auto args = parser.parse_args(argc, argv);
+    EXPECT_EQ(0, std::size(args));
+}
+
+TEST_F(arg_parse_test, return_throws_exception_on_undefined_arg) {
     const char *argv[1] = {"-h"};
     int argc = 1;
     ArgParser parser("This is description of a program.");
-    auto args = parser.parse_args(argc, argv);
-    EXPECT_EQ("true", args["-h"]);
+    EXPECT_THROW(parser.parse_args(argc, argv), UndefinedArg);
 }

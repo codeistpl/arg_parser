@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <arg_parser.h>
+#include <fmt/format.h>
 #include <iostream>
 #include <string_view>
 #include <vector>
@@ -32,11 +33,20 @@ ArgParser::Args ArgParser::parse_args(std::vector<std::string_view> argv) {
     if (has(argv, "-h")) {
         print_help();
     }
-    Args args;
+
     for (const auto &arg : argv) {
-        args[std::string(arg)] = "true";
+        if (!argument_is_defined(arg)) {
+            throw UndefinedArg(fmt::format("Argument: {} is not defined", arg));
+        }
     }
+
+    Args args;
     return args;
+}
+
+bool ArgParser::argument_is_defined(std::string_view arg) const {
+    (void)arg;
+    return false;
 }
 
 void ArgParser::print_help() const { std::cout << description_ << std::endl; }

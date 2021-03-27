@@ -31,7 +31,7 @@ message(${MODULE_NAME} ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${MODULE_NAME}_tests PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
     
-target_link_libraries(${MODULE_NAME}_tests ${MODULE_NAME} GTest::GTest GTest::Main)
+target_link_libraries(${MODULE_NAME}_tests ${MODULE_NAME} GTest::GTest GTest::Main fmt)
 
 add_test(NAME ${MODULE_NAME}_tests COMMAND ${MODULE_NAME}_tests
     WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
