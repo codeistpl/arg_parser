@@ -12,6 +12,9 @@ int main(int argc, char const *argv[]) {
         make_arg("--level", "-l", "Level", "low", {"low", "medium", "high"}));
     auto args = parser.parse_args(argc, argv);
 
+    if (args.find("--help") != args.end())
+        parser.print_help();
+
     std::cout << "args and values:" << std::endl;
 
     for (const auto &pair : args) {

@@ -1,4 +1,4 @@
-project(template_cmake_project)
+project(arg_parser)
 cmake_minimum_required(VERSION 3.17)
 set( CMAKE_CXX_STANDARD 20)
 set( CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -19,4 +19,3 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 enable_testing()
 add_subdirectory(arg_parser)
-add_subdirectory(test_app)
