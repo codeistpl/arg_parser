@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <arg_parser.h>
+#include <find.h>
 #include <fmt/format.h>
 #include <iostream>
 #include <split.h>
@@ -17,10 +18,7 @@ std::vector<std::string> to_vector(int argc, const char *argv[]) {
 
 bool is_value_allowed(const std::string &value,
                       const std::vector<std::string> &allowed_values) {
-    if (std::size(allowed_values) == 0)
-        return true;
-    return std::find(allowed_values.begin(), allowed_values.end(), value) !=
-           allowed_values.end();
+    return std::size(allowed_values) == 0 ? true : have(allowed_values, value);
 }
 
 } // namespace
@@ -77,11 +75,9 @@ bool ArgParser::argument_is_defined(std::string_view arg) const {
 }
 
 const Argument *ArgParser::get_matching_definition(std::string_view arg) const {
-    auto found =
-        std::find_if(std::cbegin(arg_definitions_), std::cend(arg_definitions_),
-                     [&](const Argument &def) {
-                         return def.name == arg || def.short_name == arg;
-                     });
+    auto found = find_if(arg_definitions_, [&](const Argument &def) {
+        return def.name == arg || def.short_name == arg;
+    });
     if (found != arg_definitions_.end())
         return &*found;
     return nullptr;
