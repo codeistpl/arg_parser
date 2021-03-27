@@ -35,5 +35,35 @@ TEST_F(arg_parse_test, returns_arg_and_none_value_on_flag_argument) {
     ArgParser parser("This is description of a program.");
     parser.add_arg(get_test_arg());
     auto args = parser.parse_args(argc, argv);
-    EXPECT_TRUE(args["--help"] == "true");
+    EXPECT_TRUE(args["--help"] == "");
+}
+
+TEST_F(arg_parse_test, returns_arg_with_default_value_even_if_not_passes) {
+    std::vector<std::string> argv{};
+    ArgParser parser("");
+    auto arg = get_test_arg();
+    arg.default_value = "true by default";
+    parser.add_arg(arg);
+    auto args = parser.parse_args(argv);
+    EXPECT_EQ("true by default", args["--help"]);
+}
+
+TEST_F(arg_parse_test, returns_argument_with_passed_value) {
+    std::vector<std::string> argv{"--help=false"};
+    ArgParser parser("");
+    auto arg = get_test_arg();
+    arg.default_value = "true by default";
+    parser.add_arg(arg);
+    auto args = parser.parse_args(argv);
+    EXPECT_EQ("false", args["--help"]);
+}
+
+TEST_F(arg_parse_test, returns_argument_with_override_empty_value) {
+    std::vector<std::string> argv{"--help"};
+    ArgParser parser("");
+    auto arg = get_test_arg();
+    arg.default_value = "true by default";
+    parser.add_arg(arg);
+    auto args = parser.parse_args(argv);
+    EXPECT_EQ("", args["--help"]);
 }

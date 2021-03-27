@@ -2,6 +2,7 @@
 #include <arg_parser.h>
 #include <fmt/format.h>
 #include <iostream>
+#include <split.h>
 #include <string_view>
 #include <vector>
 
@@ -12,11 +13,6 @@ std::vector<std::string> to_vector(int argc, const char *argv[]) {
         args.push_back(argv[i]);
     }
     return args;
-}
-
-bool has(const std::vector<std::string> &argv, std::string_view val) {
-    auto found = std::find(std::begin(argv), std::end(argv), val);
-    return found != std::end(argv);
 }
 
 } // namespace
@@ -32,18 +28,26 @@ ArgParser::Args ArgParser::parse_args(int argc, const char *argv[]) {
 }
 
 ArgParser::Args ArgParser::parse_args(std::vector<std::string> argv) {
-    if (has(argv, "-h")) {
-        print_help();
-    }
     Args args;
+
+    for (const auto &def : arg_definitions_) {
+        if (def.default_value != "") {
+            args[def.name] = def.default_value;
+        }
+    }
+
     for (const auto &arg : argv) {
-        auto matching_definition = get_matching_definition(arg);
+        auto argument_and_value = split(arg, '=');
+        auto matching_definition =
+            get_matching_definition(argument_and_value[0]);
         if (matching_definition == nullptr) {
             throw UndefinedArg(fmt::format("Argument: {} is not defined", arg));
         }
-        args[matching_definition->name] = "true";
+        if (std::size(argument_and_value) > 1)
+            args[matching_definition->name] = argument_and_value[1];
+        else
+            args[matching_definition->name] = "";
     }
-
     return args;
 }
 
