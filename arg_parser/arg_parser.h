@@ -26,11 +26,11 @@ class ArgParser {
     void add_arg(Argument arg);
 
   private:
-    bool argument_is_defined(std::string_view arg) const;
-    const Argument *get_matching_definition(std::string_view arg) const;
+    bool argument_is_defined(const std::string_view arg) const;
+    const Argument *get_matching_definition(const std::string_view arg) const;
     std::string program_name;
-    std::vector<Argument> arg_definitions_;
     std::string description_;
+    std::vector<Argument> arg_definitions_;
 };
 
 } // namespace arg_parser

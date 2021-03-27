@@ -10,6 +10,8 @@ add_compile_options( -Werror -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-sty
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules/gcovr.cmake)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+include(GNUInstallDirs)
+
 conan_basic_setup()
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

@@ -1,11 +1,14 @@
-#include <algorithm>
 #include <arg_parser.h>
-#include <find.h>
-#include <fmt/format.h>
+
+#include <details/find.h>
+#include <details/split.h>
+
+#include <algorithm>
 #include <iostream>
-#include <split.h>
 #include <string_view>
 #include <vector>
+
+#include <fmt/format.h>
 
 namespace {
 std::vector<std::string> to_vector(int argc, const char *argv[]) {
@@ -66,7 +69,7 @@ ArgParser::Args ArgParser::parse_args(std::vector<std::string> argv) {
     return args;
 }
 
-bool ArgParser::argument_is_defined(std::string_view arg) const {
+bool ArgParser::argument_is_defined(const std::string_view arg) const {
     for (const auto &definition : arg_definitions_) {
         if (argument_match(definition, arg))
             return true;
@@ -74,7 +77,8 @@ bool ArgParser::argument_is_defined(std::string_view arg) const {
     return false;
 }
 
-const Argument *ArgParser::get_matching_definition(std::string_view arg) const {
+const Argument *
+ArgParser::get_matching_definition(const std::string_view arg) const {
     auto found = find_if(arg_definitions_, [&](const Argument &def) {
         return def.name == arg || def.short_name == arg;
     });
