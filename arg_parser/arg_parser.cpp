@@ -15,6 +15,14 @@ std::vector<std::string> to_vector(int argc, const char *argv[]) {
     return args;
 }
 
+bool is_value_allowed(const std::string &value,
+                      const std::vector<std::string> &allowed_values) {
+    if (std::size(allowed_values) == 0)
+        return true;
+    return std::find(allowed_values.begin(), allowed_values.end(), value) !=
+           allowed_values.end();
+}
+
 } // namespace
 namespace arg_parser {
 
@@ -43,10 +51,19 @@ ArgParser::Args ArgParser::parse_args(std::vector<std::string> argv) {
         if (matching_definition == nullptr) {
             throw UndefinedArg(fmt::format("Argument: {} is not defined", arg));
         }
-        if (std::size(argument_and_value) > 1)
+
+        if (std::size(argument_and_value) > 1) {
             args[matching_definition->name] = argument_and_value[1];
-        else
+        } else {
             args[matching_definition->name] = "";
+        }
+
+        if (not is_value_allowed(args[matching_definition->name],
+                                 matching_definition->allowed_values)) {
+            throw ValueError(fmt::format(
+                "Argument: {} has incorrect value! Allowed Values are {}", arg,
+                fmt::join(matching_definition->allowed_values, ", ")));
+        }
     }
     return args;
 }

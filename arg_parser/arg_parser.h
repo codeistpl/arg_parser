@@ -10,12 +10,14 @@
 #include <vector>
 
 #include <undefined_arg_error.h>
+#include <value_error.h>
 namespace arg_parser {
 
 class ArgParser {
   public:
     using Args = std::map<std::string, std::string>;
     using UndefinedArg = arg_parser::UndefinedArg;
+    using ValueError = arg_parser::ValueError;
 
     ArgParser(const std::string &description = std::string());
     Args parse_args(int argc, const char *argv[]);

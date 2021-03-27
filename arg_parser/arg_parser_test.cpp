@@ -67,3 +67,13 @@ TEST_F(arg_parse_test, returns_argument_with_override_empty_value) {
     auto args = parser.parse_args(argv);
     EXPECT_EQ("", args["--help"]);
 }
+
+TEST_F(arg_parse_test, throws_exception_on_notallowed_value) {
+    std::vector<std::string> argv{"--help=bad_value"};
+    ArgParser parser("");
+    auto arg = get_test_arg();
+    arg.default_value = "true";
+    arg.allowed_values = {"true", "false"};
+    parser.add_arg(arg);
+    EXPECT_THROW(parser.parse_args(argv), ValueError);
+}
